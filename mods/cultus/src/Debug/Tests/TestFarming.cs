@@ -23,7 +23,9 @@ namespace cultus
 
             EntityDominionsNPC npc = DebugManagerNPC.SpawnNPC(player, api);
 
-            npc.GetBehavior<EntityBehaviorNPCWork>().AddWork(marker.job);
+            npc.Job = marker.job;
+
+            //npc.GetBehavior<EntityBehaviorNPCWork>().AddWork(marker.job);
 
             return "Created farm";
         }
@@ -40,7 +42,7 @@ namespace cultus
             TestStockpile.SpawnStockpileWithHeldItem(player, stockpileCenter);
 
             NPCJobStockpile stockpile = (NPCJobStockpile)((BEAreaMarker)api.World.BlockAccessor.GetBlockEntity(stockpileCenter)).job;
-            //
+            // ----
 
             BEAreaMarker marker = DebugManagerMarker.CreateJobMarker(centerPos, api, EnumMarkerJob.FARMING, stockpile);
 
@@ -48,7 +50,9 @@ namespace cultus
 
             EntityDominionsNPC npc = DebugManagerNPC.SpawnNPC(player, api);
 
-            npc.GetBehavior<EntityBehaviorNPCWork>().AddWork(marker.job);
+            npc.Job = marker.job;
+
+            //npc.GetBehavior<EntityBehaviorNPCWork>().AddWork(marker.job);
 
             return "Created farm";
         }

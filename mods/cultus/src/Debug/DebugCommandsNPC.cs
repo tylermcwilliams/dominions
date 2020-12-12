@@ -119,7 +119,7 @@ namespace cultus
 
                 foreach (EntityDominionsNPC npc in selections[player.PlayerUID])
                 {
-                    npc.GetBehavior<EntityBehaviorNPCWork>().AddWork(marker.job);
+                    npc.Job = marker.job;
                     count++;
                 }
 

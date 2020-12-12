@@ -1,6 +1,6 @@
 ﻿namespace cultus
 {
-    internal interface INPCJob
+    public interface INPCJob
     {
         void TryGetDuty(EntityDominionsNPC npc, ref IDuty TryGetDuty);
     }

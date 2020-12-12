@@ -105,14 +105,11 @@
     <Compile Include="src\Debug\Tests\TestStockpile.cs" />
     <Compile Include="src\Debug\Tests\TestFarming.cs" />
     <Compile Include="src\Debug\Tests\TestSmelting.cs" />
-    <Compile Include="src\NPC\Behavior\EntityBehaviorNPCWork.cs" />
     <Compile Include="src\NPC\EntityDominionsNPC.cs" />
     <Compile Include="src\NPC\Inventory\InventoryNPC.cs" />
-    <Compile Include="src\NPC\Tasks\AiNPCGoTo.cs" />
-    <Compile Include="src\NPC\Tasks\AiNPCTaskWork.cs" />
     <Compile Include="src\Area\BEAreaMarker.cs" />
     <Compile Include="src\Area\Block\BlockAreaMarker.cs" />
-    <Compile Include="src\NPC\Tasks\AiTaskWorkBase.cs" />
+    <Compile Include="src\NPC\Tasks\AiTaskWork.cs" />
     <Compile Include="src\Work\Jobs\NPCJobFarm.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

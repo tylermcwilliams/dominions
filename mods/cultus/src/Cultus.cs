@@ -20,9 +20,10 @@ namespace cultus
             this.api = api;
 
             RegisterEntities();
-            RegisterEntityBehaviors();
 
             RegisterBlocks();
+
+            RegisterTasks();
         }
 
         private void RegisterEntities()
@@ -30,15 +31,15 @@ namespace cultus
             api.RegisterEntity("EntityDominionsNPC", typeof(EntityDominionsNPC));
         }
 
-        private void RegisterEntityBehaviors()
-        {
-            api.RegisterEntityBehaviorClass("EntityBehaviorNPCWork", typeof(EntityBehaviorNPCWork));
-        }
-
         private void RegisterBlocks()
         {
             api.RegisterBlockClass("BlockAreaMarker", typeof(BlockAreaMarker));
             api.RegisterBlockEntityClass("BEAreaMarker", typeof(BEAreaMarker));
+        }
+
+        private void RegisterTasks()
+        {
+            AiTaskRegistry.Register("npcwork", typeof(AiTaskWork));
         }
     }
 }
