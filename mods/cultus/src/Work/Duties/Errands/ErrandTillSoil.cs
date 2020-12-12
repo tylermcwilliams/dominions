@@ -17,12 +17,16 @@ namespace cultus
 
     internal class ErrandTillSoil : Errand
     {
+        private IDuty SubErrand;
+
         private ICoreServerAPI api;
         private BlockPos curPos;
         private BlockPos end;
 
-        public ErrandTillSoil(ICoreServerAPI api, BlockPos start, BlockPos end, Vintagestory.API.Common.Action<bool> OnFinished = null) : base(OnFinished)
+        public ErrandTillSoil(ICoreServerAPI api, BlockPos start, BlockPos end, NPCJobStockpile stockpile)
         {
+            SubErrand = new ErrandSearchForTool(EnumTool.Hoe, stockpile);
+
             this.api = api;
             this.curPos = start;
             this.end = end;
@@ -31,15 +35,27 @@ namespace cultus
         public override void Init(EntityDominionsNPC npc)
         {
             base.Init(npc);
+            SubErrand.Init(npc);
+        }
+
+        public override bool ShouldRun()
+        {
+            return curPos.Z <= end.Z;
         }
 
         public override BlockPos NextBlock()
         {
-            return curPos;
+            return SubErrand.ShouldRun() ? SubErrand.NextBlock() : curPos;
         }
 
         public override void Run(float dt)
         {
+            if (SubErrand.ShouldRun())
+            {
+                SubErrand.Run(dt);
+                return;
+            }
+
             BlockPos groundPos = curPos.DownCopy(1);
             Block block = api.World.BlockAccessor.GetBlock(groundPos);
             Block farmland = api.World.GetBlock(new AssetLocation("farmland-dry-" + block.LastCodePart(1)));
@@ -63,23 +79,6 @@ namespace cultus
             }
 
             curPos.Add(0, 0, 1);
-        }
-
-        public override bool ShouldRun()
-        {
-            if (curPos.Z > end.Z)
-            {
-                OnFinished?.Invoke(false);
-                return false;
-            }
-
-            if (!npc.HasItemEquipped(EnumTool.Hoe))
-            {
-                OnFinished?.Invoke(true);
-                return false;
-            }
-
-            return true;
         }
     }
 }

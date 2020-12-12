@@ -23,201 +23,112 @@ namespace cultus
         HARVESTING
     }
 
-    internal enum EnumFieldColumnState
-    {
-        FREE,
-        OCCUPIED,
-        DONE
-    }
-
     internal class NPCJobFarm : NPCJobArea
     {
-        public int DayToCheck;
-
-        public Item seed;
-        public Block cropBlock;
+        public string crop;
         public EnumFarmState State;
 
-        public int columnLength;
-        private Dictionary<int, EnumFieldColumnState> columns;
+        private List<IDuty> dutyQueue;
+
+        private int plantDate;
+        private float growthTime;
+
+        public Item seed;
+        public Block ripeCrop;
 
         public NPCJobFarm(Cuboidi area, string crop, ICoreServerAPI api, NPCJobStockpile stockpile) : base(area, api)
         {
+            this.dutyQueue = new List<IDuty>();
+
             this.stockpile = stockpile;
+
+            this.crop = crop;
 
             this.seed = api.World.GetItem(new AssetLocation("game", $"seeds-{crop}"));
 
             int finalStage = api.World.GetBlock(new AssetLocation("game", $"crop-{crop}-1")).CropProps.GrowthStages;
-            this.cropBlock = api.World.GetBlock(new AssetLocation("game", $"crop-{crop}-{finalStage}"));
+            this.ripeCrop = api.World.GetBlock(new AssetLocation("game", $"crop-{crop}-{finalStage}"));
+
+            this.growthTime = ripeCrop.CropProps.TotalGrowthDays + 1;
 
             State = EnumFarmState.TILLING;
-
-            this.columnLength = area.SizeZ;
-            this.columns = CreateFieldColumns();
+            dutyQueue = CreateDutyQueue();
         }
 
         public override void TryGetDuty(EntityDominionsNPC npc, ref IDuty duty)
         {
-            TryUpdateFarmState();
-
-            int nextCol = GetNextFieldColumnStart();
-
-            if (nextCol == -1) return;
-
-            BlockPos startPos = area.Start.AsBlockPos.AddCopy(nextCol, 0, 0);
-            BlockPos endPos = area.Start.AsBlockPos.AddCopy(nextCol, 0, area.SizeZ);
-
-            switch (State)
+            if (dutyQueue.Count > 0)
             {
-                case EnumFarmState.TILLING:
-                    if (npc.HasItemEquipped(EnumTool.Hoe))
-                    {
-                        columns[nextCol] = EnumFieldColumnState.OCCUPIED;
-                        duty = new ErrandTillSoil(api, startPos, endPos, OnFinished(nextCol));
-                    }
-                    else
-                    {
-                        if (npc.RightHandItemSlot.Empty)
-                        {
-                            duty = new ErrandSearchForTool(EnumTool.Hoe, stockpile);
-                        }
-                        else
-                        {
-                            duty = new ErrandDepositItems(stockpile);
-                        }
-                    }
-                    break;
-
-                case EnumFarmState.SOWING:
-                    if (npc.HasItemEquipped(seed, area.SizeZ + 1))
-                    {
-                        columns[nextCol] = EnumFieldColumnState.OCCUPIED;
-                        duty = new ErrandSowCrop(api, startPos, endPos, seed.LastCodePart(), OnFinished(nextCol));
-                    }
-                    else
-                    {
-                        if (npc.RightHandItemSlot.Empty)
-                        {
-                            duty = new ErrandSearchForItem(seed, area.SizeZ + 1, stockpile);
-                        }
-                        else
-                        {
-                            duty = new ErrandDepositItems(stockpile);
-                        }
-                    }
-                    break;
-
-                case EnumFarmState.GROWING:
-                    // I know, I know...
-                    if (DayToCheck > api.World.Calendar.DayOfYear) return;
-
-                    if (!IsReadyForHarvest())
-                    {
-                        DayToCheck = api.World.Calendar.DayOfYear + 1;
-                        return;
-                    }
-
-                    goto case EnumFarmState.HARVESTING;
-
-                case EnumFarmState.HARVESTING:
-                    if (npc.RightHandItemSlot.Empty)
-                    {
-                        duty = new ErrandHarvestCrop(api, startPos, endPos, cropBlock, OnFinished(nextCol));
-                    }
-                    else
-                    {
-                        duty = new ErrandDepositItems(stockpile);
-                    }
-                    break;
+                duty = dutyQueue.PopOne();
             }
-        }
-
-        public int GetNextFieldColumnStart()
-        {
-            foreach (int key in columns.Keys.ToList())
+            else
             {
-                if (columns[key] == EnumFieldColumnState.FREE)
-                {
-                    return key;
-                }
+                TryUpdateFarmState();
             }
-
-            return -1;
-        }
-
-        public void MarkFieldColumnDone(int col)
-        {
-            columns[col] = EnumFieldColumnState.DONE;
-        }
-
-        private Dictionary<int, EnumFieldColumnState> CreateFieldColumns()
-        {
-            Dictionary<int, EnumFieldColumnState> columns = new Dictionary<int, EnumFieldColumnState>();
-
-            for (int x = 0; x <= area.SizeX; x++)
-            {
-                columns.Add(x, EnumFieldColumnState.FREE);
-            }
-
-            return columns;
         }
 
         private void TryUpdateFarmState()
         {
-            if (State == EnumFarmState.GROWING || columns.All(col => col.Value == EnumFieldColumnState.DONE))
+            if (State == EnumFarmState.GROWING && api.World.Calendar.DayOfYear < (plantDate + growthTime))
             {
-                State = NextFarmState();
-            }
-        }
-
-        private EnumFarmState NextFarmState()
-        {
-            foreach (int key in columns.Keys.ToList())
-            {
-                columns[key] = EnumFieldColumnState.FREE;
+                return;
             }
 
             switch (State)
             {
                 case EnumFarmState.TILLING:
-                    return EnumFarmState.SOWING;
+                    State = EnumFarmState.SOWING;
+                    break;
 
                 case EnumFarmState.SOWING:
-                    DayToCheck = api.World.Calendar.DayOfYear + 1;
-                    return EnumFarmState.GROWING;
+                    plantDate = api.World.Calendar.DayOfYear;
+                    State = EnumFarmState.GROWING;
+                    return;
 
                 case EnumFarmState.GROWING:
-                    return EnumFarmState.HARVESTING;
+                    State = EnumFarmState.HARVESTING;
+                    break;
 
-                default:
-                    return EnumFarmState.SOWING;
+                case EnumFarmState.HARVESTING:
+                    State = EnumFarmState.SOWING;
+                    break;
             }
+
+            dutyQueue = CreateDutyQueue();
         }
 
-        private bool IsReadyForHarvest()
+        private List<IDuty> CreateDutyQueue()
         {
-            bool isReady = true;
+            List<IDuty> dutyQueue = new List<IDuty>();
 
-            api.World.BlockAccessor.SearchBlocks(area.Start.AsBlockPos, area.End.AsBlockPos,
-               (Block block, BlockPos pos) =>
-               {
-                   if (api.World.BlockAccessor.GetBlock(pos) is BlockCrop crop)
-                   {
-                       if (crop == cropBlock) return false;
+            BlockPos startPos = new BlockPos(area.MinX, area.MaxY, area.MinZ);
+            BlockPos endPos = startPos.AddCopy(0, 0, area.SizeZ);
 
-                       return !(isReady = false);
-                   }
-
-                   return false;
-               });
-
-            return isReady;
-        }
-
-        private Vintagestory.API.Common.Action<bool> OnFinished(int col) =>
-            (bool cancelled) =>
+            switch (State)
             {
-                columns[col] = cancelled ? EnumFieldColumnState.FREE : EnumFieldColumnState.DONE;
-            };
+                case EnumFarmState.TILLING:
+                    for (int i = 0; i < area.SizeX; i++)
+                    {
+                        dutyQueue.Add(new ErrandTillSoil(api, startPos.AddCopy(i, 0, 0), endPos.AddCopy(i, 0, 0), stockpile));
+                    }
+                    break;
+
+                case EnumFarmState.SOWING:
+                    for (int i = 0; i < area.SizeX; i++)
+                    {
+                        dutyQueue.Add(new ErrandSowCrop(api, startPos.AddCopy(i, 0, 0), endPos.AddCopy(i, 0, 0), crop, stockpile));
+                    }
+                    break;
+
+                case EnumFarmState.HARVESTING:
+                    for (int i = 0; i < area.SizeX; i++)
+                    {
+                        dutyQueue.Add(new ErrandHarvestCrop(api, startPos.AddCopy(i, 0, 0), endPos.AddCopy(i, 0, 0), ripeCrop));
+                    }
+                    break;
+            }
+
+            return dutyQueue;
+        }
     }
 }

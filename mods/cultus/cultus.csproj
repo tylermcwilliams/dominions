@@ -77,9 +77,7 @@
     <None Include="assets\game\entities\dominionsNPC.json" />
     <None Include="docs\work routines.md" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="src\Extensions\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Compile Include="src\Work\Conditions\ConditionHasItem.cs" />
     <Compile Include="src\Work\Conditions\ConditionHasBlock.cs" />

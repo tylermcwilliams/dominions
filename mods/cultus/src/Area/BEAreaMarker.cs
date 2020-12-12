@@ -17,7 +17,7 @@ namespace cultus
 {
     internal class BEAreaMarker : BlockEntity
     {
-        private static int size = 1;
+        private static int size = 2;
 
         public INPCJob job;
         public Cuboidi cube;
@@ -28,7 +28,7 @@ namespace cultus
             {
                 cube = new Cuboidi(
                 Pos.AddCopy(-size, 0, -size),
-                Pos.AddCopy(size, 1, size)
+                Pos.AddCopy(size, 0, size)
                 ); ;
 
                 //CreateJobs((ICoreServerAPI)api);
@@ -39,7 +39,7 @@ namespace cultus
 
         public void ShowArea(IPlayer player, ICoreServerAPI api)
         {
-            api.World.HighlightBlocks(player, 1, new List<BlockPos>() { cube.Start.AsBlockPos, cube.End.AsBlockPos.UpCopy(1) }, EnumHighlightBlocksMode.Absolute, EnumHighlightShape.Cube);
+            api.World.HighlightBlocks(player, 1, new List<BlockPos>() { cube.Start.AsBlockPos, cube.End.AsBlockPos.AddCopy(1) }, EnumHighlightBlocksMode.Absolute, EnumHighlightShape.Cube);
         }
     }
 }

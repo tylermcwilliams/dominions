@@ -22,7 +22,7 @@ namespace cultus
         {
             if (containers != null && containers.Count() > 0)
             {
-                return containers;
+                return new List<BlockEntityContainer>(containers);
             }
 
             containers = new List<BlockEntityContainer>();

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
 using Vintagestory.API.Client;
@@ -17,14 +18,19 @@ namespace cultus
 
     internal class ErrandSowCrop : Errand
     {
+        private IDuty SubErrand;
+
         private ICoreServerAPI api;
         private BlockPos curPos;
         private BlockPos end;
 
         private string crop;
 
-        public ErrandSowCrop(ICoreServerAPI api, BlockPos start, BlockPos end, string crop, Vintagestory.API.Common.Action<bool> OnFinished = null) : base(OnFinished)
+        public ErrandSowCrop(ICoreServerAPI api, BlockPos start, BlockPos end, string crop, NPCJobStockpile stockpile)
         {
+            Item seed = api.World.GetItem(new AssetLocation("game", "seeds-" + crop));
+            SubErrand = new ErrandSearchForItem(seed, end.Z - start.Z + 1, stockpile);
+
             this.api = api;
             this.curPos = start;
             this.end = end;
@@ -35,6 +41,7 @@ namespace cultus
         public override void Init(EntityDominionsNPC npc)
         {
             base.Init(npc);
+            SubErrand.Init(npc);
 
             this.elapsed = cd;
 
@@ -43,11 +50,17 @@ namespace cultus
 
         public override BlockPos NextBlock()
         {
-            return curPos;
+            return SubErrand.ShouldRun() ? SubErrand.NextBlock() : curPos;
         }
 
         public override void Run(float dt)
         {
+            if (SubErrand.ShouldRun())
+            {
+                SubErrand.Run(dt);
+                return;
+            }
+
             BlockPos groundPos = curPos.DownCopy(1);
             BlockEntity be = api.World.BlockAccessor.GetBlockEntity(groundPos);
 
@@ -56,6 +69,7 @@ namespace cultus
                 if (ShouldWait(dt)) return;
 
                 farmland.TryPlant(api.World.GetBlock(new AssetLocation("game", $"crop-{crop}-1")));
+                ((ErrandSearchForItem)SubErrand).amount--;
                 npc.ConsumeItems(npc.RightHandItemSlot);
                 api.World.BlockAccessor.MarkBlockDirty(groundPos);
 
@@ -67,19 +81,7 @@ namespace cultus
 
         public override bool ShouldRun()
         {
-            if (curPos.Z > end.Z)
-            {
-                OnFinished?.Invoke(false);
-                return false;
-            }
-
-            if (!npc.HasItemEquipped(api.World.GetItem(new AssetLocation("seeds-" + crop)), end.Z - curPos.Z))
-            {
-                OnFinished?.Invoke(true);
-                return false;
-            }
-
-            return true;
+            return curPos.Z <= end.Z;
         }
     }
 }
