@@ -44,7 +44,7 @@ namespace cultus
 
         public override bool ShouldRun()
         {
-            return npc.RightHandItemSlot.StackSize < amount || itemTest(npc.RightHandItemSlot.Itemstack);
+            return npc.RightHandItemSlot.StackSize < amount || !itemTest(npc.RightHandItemSlot.Itemstack);
         }
 
         public override BlockPos NextBlock()

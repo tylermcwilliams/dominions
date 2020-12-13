@@ -16,9 +16,13 @@ namespace cultus
     {
         private List<BlockEntityContainer> containers;
 
+        private NPCJobStockpile stockpile;
+
         public ErrandDepositItems(NPCJobStockpile stockpile)
         {
             this.containers = stockpile.FindContainers();
+
+            this.stockpile = stockpile;
         }
 
         public override void Init(EntityDominionsNPC npc)
@@ -39,6 +43,17 @@ namespace cultus
         public override void Run(float dt)
         {
             if (ShouldWait(dt)) return;
+
+            if (containers.Count() == 0)
+            {
+                containers = stockpile.FindContainers();
+                cd = 5;
+                return;
+            }
+            else
+            {
+                cd = 2;
+            }
 
             WeightedSlot bestSlot = containers.PopOne().Inventory.GetBestSuitedSlot(npc.RightHandItemSlot);
 

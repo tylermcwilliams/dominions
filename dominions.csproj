@@ -114,8 +114,14 @@
     <Compile Include="mods\cultus\src\Work\Orders\BatchSmelting.cs" />
     <Compile Include="RedirectLogs.cs" />
     <Content Include="modinfo.json" />
+    <Content Include="mods\cultus\cultus.csproj.user" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="mods\cultus\assets\game\blocktypes\areamarker.json" />
+    <None Include="mods\cultus\assets\game\entities\dominionsNPC.json" />
+    <None Include="mods\cultus\cultus.csproj" />
+    <None Include="mods\cultus\docs\work routines.md" />
+    <None Include="mods\cultus\modinfo.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
