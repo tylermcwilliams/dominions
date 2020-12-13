@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Security.Policy;
 using Vintagestory.API.Common;
 using Vintagestory.API.Common.Entities;
 using Vintagestory.API.Datastructures;
@@ -10,6 +11,20 @@ namespace cultus
     public class EntityDominionsNPC : EntityHumanoid
     {
         //public override double EyeHeight => base.Properties.EyeHeight - (controls.Sneak ? 0.1 : 0.0);
+
+        private INPCJob _job;
+
+        public INPCJob Job
+        {
+            get => _job;
+            set
+            {
+                //
+                // Needs to notify job and give back current duty
+                //
+                _job = value;
+            }
+        }
 
         protected InventoryBase inv;
 

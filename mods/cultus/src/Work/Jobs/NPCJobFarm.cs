@@ -107,21 +107,21 @@ namespace cultus
             switch (State)
             {
                 case EnumFarmState.TILLING:
-                    for (int i = 0; i < area.SizeX; i++)
+                    for (int i = 0; i <= area.SizeX; i++)
                     {
                         dutyQueue.Add(new ErrandTillSoil(api, startPos.AddCopy(i, 0, 0), endPos.AddCopy(i, 0, 0), stockpile));
                     }
                     break;
 
                 case EnumFarmState.SOWING:
-                    for (int i = 0; i < area.SizeX; i++)
+                    for (int i = 0; i <= area.SizeX; i++)
                     {
                         dutyQueue.Add(new ErrandSowCrop(api, startPos.AddCopy(i, 0, 0), endPos.AddCopy(i, 0, 0), crop, stockpile));
                     }
                     break;
 
                 case EnumFarmState.HARVESTING:
-                    for (int i = 0; i < area.SizeX; i++)
+                    for (int i = 0; i <= area.SizeX; i++)
                     {
                         dutyQueue.Add(new ErrandHarvestCrop(api, startPos.AddCopy(i, 0, 0), endPos.AddCopy(i, 0, 0), ripeCrop));
                     }

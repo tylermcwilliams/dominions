@@ -520,9 +520,14 @@
       },
       { "code": "breathe" },
       {
-        "code": "taskai"
-      },
-      { "code": "EntityBehaviorNPCWork" }
+        "code": "taskai",
+        "aitasks": [
+          {
+            "code": "npcwork",
+            "priority": 3
+          }
+        ]
+      }
     ]
   },
   "sounds": {

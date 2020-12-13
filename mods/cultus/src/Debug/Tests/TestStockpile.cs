@@ -53,7 +53,7 @@ namespace cultus
 
             EntityDominionsNPC npc = DebugManagerNPC.SpawnNPC(player, api);
 
-            EntityBehaviorNPCWork workB = npc.GetBehavior<EntityBehaviorNPCWork>();
+            //EntityBehaviorNPCWork workB = npc.GetBehavior<EntityBehaviorNPCWork>();
 
             List<BlockEntityContainer> containers = stockpile.FindContainers();
             containers[0].Inventory[0].Itemstack = stack;

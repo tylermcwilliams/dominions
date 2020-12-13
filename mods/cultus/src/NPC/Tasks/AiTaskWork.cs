@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Vintagestory.API;
 using Vintagestory.API.Common;
 using Vintagestory.API.Common.Entities;
+using Vintagestory.API.Datastructures;
 using Vintagestory.API.MathTools;
 using Vintagestory.API.Server;
 using Vintagestory.API.Util;
@@ -14,28 +15,48 @@ using Vintagestory.Essentials;
 
 namespace cultus
 {
-    internal class AiNPCGoTo : AiTaskWorkBase
+    internal class AiTaskWork : AiTaskBase
     {
-        public AiNPCGoTo(EntityAgent entity) : base(entity)
+        private readonly EntityDominionsNPC npc;
+
+        private IDuty duty;
+
+        public AiTaskWork(EntityAgent entity) : base(entity)
         {
+            if (entity is EntityDominionsNPC npc)
+            {
+                this.npc = npc;
+            }
         }
 
         public override int Slot => base.Slot;
 
-        public override float Priority => 1.5f;
+        public override float Priority => base.Priority;
 
         public override float PriorityForCancel => base.PriorityForCancel;
 
         public override bool ContinueExecute(float dt)
         {
-            if (ShouldExecute())
+            if (!ShouldExecute())
             {
-                return base.ContinueExecute(dt);
+                pathTraverser.Stop();
+                return false;
+            }
+
+            if (pathTraverser.Active) return true;
+
+            BlockPos destination = duty.NextBlock();
+
+            if (entity.ServerPos.DistanceTo(destination.ToVec3d()) < 3)
+            {
+                duty.Run(dt);
             }
             else
             {
-                return false;
+                pathTraverser.NavigateTo(destination.ToVec3d(), 0.05f, 1, OnGoalReached, OnStuck);
             }
+
+            return base.ContinueExecute(dt);
         }
 
         public override void FinishExecute(bool cancelled)
@@ -45,21 +66,32 @@ namespace cultus
 
         public override bool ShouldExecute()
         {
-            if (base.ShouldExecute() && !workBehavior.CanIdle() && entity.ServerPos.DistanceTo(workBehavior.NextTarget().ToVec3d()) > 3)
+            if (npc.Job == null)
             {
-                return true;
+                duty = null;
+                return false;
+            }
+
+            if (duty == null)
+            {
+                npc.Job.TryGetDuty(npc, ref duty);
+                if (duty != null)
+                {
+                    duty.Init(npc);
+                }
+                return false;
             }
             else
             {
+                if (duty.ShouldRun()) return true;
+
+                duty = null;
                 return false;
             }
         }
 
         public override void StartExecute()
         {
-            entity.StartAnimation("walk");
-            pathTraverser.NavigateTo(workBehavior.NextTarget().ToVec3d(), 0.05f, 1, OnGoalReached, OnStuck);
-
             base.StartExecute();
         }
 
@@ -70,7 +102,6 @@ namespace cultus
 
         private void OnGoalReached()
         {
-            entity.StopAnimation("walk");
             pathTraverser.Stop();
         }
 
