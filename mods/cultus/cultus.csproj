@@ -84,6 +84,7 @@
     <Compile Include="src\Work\Conditions\ConditionHasDuty.cs" />
     <Compile Include="src\Work\Conditions\ConditionHasItemEquipped.cs" />
     <Compile Include="src\Work\Conditions\ConditionHasTool.cs" />
+    <Compile Include="src\Work\Conditions\ConditionItemTest.cs" />
     <Compile Include="src\Work\Duties\Errands\Errand.cs" />
     <Compile Include="src\Work\Duties\Errands\ErrandDepositItems.cs" />
     <Compile Include="src\Work\Duties\Errands\ErrandSearchForTool.cs" />

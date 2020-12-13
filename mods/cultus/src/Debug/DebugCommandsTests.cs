@@ -52,7 +52,7 @@ namespace cultus
                     break;
 
                 default:
-                    msg = "Error, Invalid args";
+                    msg = "Invalid args";
                     break;
             }
 
