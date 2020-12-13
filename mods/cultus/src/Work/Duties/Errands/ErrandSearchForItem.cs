@@ -16,17 +16,17 @@ namespace cultus
 
         public int amount;
 
-        private Item item;
+        private ActionBoolReturn<ItemStack> itemTest;
 
         private List<BlockEntityContainer> containers;
 
         private NPCJobStockpile stockpile;
 
-        public ErrandSearchForItem(Item item, int amount, NPCJobStockpile stockpile)
+        public ErrandSearchForItem(ActionBoolReturn<ItemStack> itemTest, NPCJobStockpile stockpile, int amount = 1)
         {
             SubErrand = new ErrandDepositItems(stockpile);
 
-            this.item = item;
+            this.itemTest = itemTest;
             this.amount = amount;
 
             this.containers = stockpile.FindContainers();
@@ -44,7 +44,7 @@ namespace cultus
 
         public override bool ShouldRun()
         {
-            return npc.RightHandItemSlot.StackSize < amount || npc.RightHandItemSlot.Itemstack.Item != item;
+            return npc.RightHandItemSlot.StackSize < amount || !itemTest(npc.RightHandItemSlot.Itemstack);
         }
 
         public override BlockPos NextBlock()
@@ -79,9 +79,7 @@ namespace cultus
 
             foreach (ItemSlot slot in container.Inventory)
             {
-                if (slot.Empty) continue;
-
-                if (slot.Itemstack.Item.Equals(item))
+                if (!slot.Empty && itemTest(slot.Itemstack))
                 {
                     if (slot.Itemstack.StackSize >= amount)
                     {

@@ -25,7 +25,7 @@ namespace cultus
 
         public ErrandTillSoil(ICoreServerAPI api, BlockPos start, BlockPos end, NPCJobStockpile stockpile)
         {
-            SubErrand = new ErrandSearchForTool(EnumTool.Hoe, stockpile);
+            SubErrand = new ErrandSearchForItem(IsTool(EnumTool.Hoe), stockpile);
 
             this.api = api;
             this.curPos = start;

@@ -17,7 +17,7 @@ namespace cultus
 {
     internal class BEAreaMarker : BlockEntity
     {
-        private static int size = 2;
+        public int size = 2;
 
         public INPCJob job;
         public Cuboidi cube;

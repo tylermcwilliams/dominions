@@ -28,8 +28,7 @@ namespace cultus
 
         public ErrandSowCrop(ICoreServerAPI api, BlockPos start, BlockPos end, string crop, NPCJobStockpile stockpile)
         {
-            Item seed = api.World.GetItem(new AssetLocation("game", "seeds-" + crop));
-            SubErrand = new ErrandSearchForItem(seed, end.Z - start.Z + 1, stockpile);
+            SubErrand = new ErrandSearchForItem(IsPlantableSeed(crop), stockpile, end.Z - start.Z + 1);
 
             this.api = api;
             this.curPos = start;

@@ -79,14 +79,14 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Compile Include="src\Work\Conditions\ConditionHasItem.cs" />
-    <Compile Include="src\Work\Conditions\ConditionHasBlock.cs" />
-    <Compile Include="src\Work\Conditions\ConditionHasDuty.cs" />
-    <Compile Include="src\Work\Conditions\ConditionHasItemEquipped.cs" />
-    <Compile Include="src\Work\Conditions\ConditionHasTool.cs" />
+    <Compile Include="src\Work\Conditions\Entity\ConditionHasItem.cs" />
+    <Compile Include="src\Work\Conditions\Entity\ConditionHasBlock.cs" />
+    <Compile Include="src\Work\Conditions\Entity\ConditionHasDuty.cs" />
+    <Compile Include="src\Work\Conditions\Entity\ConditionHasItemEquipped.cs" />
+    <Compile Include="src\Work\Conditions\Entity\ConditionHasTool.cs" />
+    <Compile Include="src\Work\Conditions\Item\ConditionItemTest.cs" />
     <Compile Include="src\Work\Duties\Errands\Errand.cs" />
     <Compile Include="src\Work\Duties\Errands\ErrandDepositItems.cs" />
-    <Compile Include="src\Work\Duties\Errands\ErrandSearchForTool.cs" />
     <Compile Include="src\Work\Duties\Errands\ErrandSearchForItem.cs" />
     <Compile Include="src\Work\Duties\Errands\ErrandHarvestCrop.cs" />
     <Compile Include="src\Work\Duties\Errands\ErrandSowCrop.cs" />
@@ -97,7 +97,7 @@
     <Compile Include="src\Work\Jobs\NPCJobSmelting.cs" />
     <Compile Include="src\Work\Jobs\NPCJobStockpile.cs" />
     <Compile Include="src\Work\Orders\BatchSmelting.cs" />
-    <Compile Include="src\Debug\DebugCommandsTests.cs" />
+    <Compile Include="src\Debug\Tests\DebugCommandsTests.cs" />
     <Compile Include="src\Debug\DebugCommandsNPC.cs" />
     <Compile Include="src\Cultus.cs" />
     <Compile Include="src\Debug\Manager\DebugManagerMarker.cs" />
