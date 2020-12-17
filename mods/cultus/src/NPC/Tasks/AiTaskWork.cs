@@ -108,5 +108,12 @@ namespace cultus
         private void OnStuck()
         {
         }
+
+        public override void OnEntityDespawn(EntityDespawnReason reason)
+        {
+            // return duty
+
+            base.OnEntityDespawn(reason);
+        }
     }
 }

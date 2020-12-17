@@ -12,17 +12,21 @@ using Vintagestory.GameContent;
 
 namespace cultus
 {
-    internal class ErrandDepositItems : Errand
+    using static Conditions;
+
+    internal class ErrandPutItem : Errand
     {
-        private List<BlockEntityContainer> containers;
+        private IDuty SubErrand;
+        private ItemStack stack;
+        private BlockEntityContainer container;
 
-        private NPCJobStockpile stockpile;
-
-        public ErrandDepositItems(NPCJobStockpile stockpile)
+        public ErrandPutItem(ItemStack stack, BlockEntityContainer container, NPCJobStockpile stockpile)
         {
-            this.containers = stockpile.FindContainers();
+            SubErrand = new ErrandSearchForItem(IsItemstack(stack), stockpile);
 
-            this.stockpile = stockpile;
+            this.stack = stack;
+
+            this.container = container;
         }
 
         public override void Init(EntityDominionsNPC npc)
@@ -37,25 +41,20 @@ namespace cultus
 
         public override BlockPos NextBlock()
         {
-            return containers.Count() == 0 ? npc.ServerPos.AsBlockPos : containers.Last().Pos;
+            return container.Pos;
         }
 
         public override void Run(float dt)
         {
-            if (ShouldWait(dt)) return;
-
-            if (containers.Count() == 0)
+            if (SubErrand.ShouldRun())
             {
-                containers = stockpile.FindContainers();
-                cd = 5;
+                SubErrand.Run(dt);
                 return;
             }
-            else
-            {
-                cd = 2;
-            }
 
-            WeightedSlot bestSlot = containers.PopOne().Inventory.GetBestSuitedSlot(npc.RightHandItemSlot);
+            if (ShouldWait(dt)) return;
+
+            WeightedSlot bestSlot = container.Inventory.GetBestSuitedSlot(npc.RightHandItemSlot);
 
             if (bestSlot != null)
             {

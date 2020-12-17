@@ -39,5 +39,13 @@ namespace cultus
                 return itemstack.Item.LastCodePart() == crop;
             };
         }
+
+        public static ActionBoolReturn<ItemStack> IsItemstack(ItemStack stack)
+        {
+            return (ItemStack itemstack) =>
+            {
+                return itemstack == stack;
+            };
+        }
     }
 }

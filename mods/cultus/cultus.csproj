@@ -75,9 +75,12 @@
   <ItemGroup>
     <None Include="assets\game\blocktypes\areamarker.json" />
     <None Include="assets\game\entities\dominionsNPC.json" />
+    <None Include="docs\summary.md" />
     <None Include="docs\work routines.md" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="src\Area\Areas\" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="src\Work\Conditions\Entity\ConditionHasItem.cs" />
     <Compile Include="src\Work\Conditions\Entity\ConditionHasBlock.cs" />
@@ -86,10 +89,12 @@
     <Compile Include="src\Work\Conditions\Entity\ConditionHasTool.cs" />
     <Compile Include="src\Work\Conditions\Item\ConditionItemTest.cs" />
     <Compile Include="src\Work\Duties\Errands\Errand.cs" />
-    <Compile Include="src\Work\Duties\Errands\ErrandDepositItems.cs" />
+    <Compile Include="src\Work\Duties\Errands\ErrandPutItem.cs" />
+    <Compile Include="src\Work\Duties\Errands\ErrandDepositAllItems.cs" />
     <Compile Include="src\Work\Duties\Errands\ErrandSearchForItem.cs" />
     <Compile Include="src\Work\Duties\Errands\ErrandHarvestCrop.cs" />
     <Compile Include="src\Work\Duties\Errands\ErrandSowCrop.cs" />
+    <Compile Include="src\Work\Duties\Errands\ErrandUseBlock.cs" />
     <Compile Include="src\Work\Duties\IDuty.cs" />
     <Compile Include="src\Work\Duties\Errands\ErrandTillSoil.cs" />
     <Compile Include="src\Work\Jobs\INPCJob.cs" />

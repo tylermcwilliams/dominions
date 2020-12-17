@@ -24,7 +24,8 @@ namespace cultus
 
         public ErrandSearchForItem(ActionBoolReturn<ItemStack> itemTest, NPCJobStockpile stockpile, int amount = 1)
         {
-            SubErrand = new ErrandDepositItems(stockpile);
+            // We clear the inventory
+            SubErrand = new ErrandDepositAllItems(stockpile);
 
             this.itemTest = itemTest;
             this.amount = amount;

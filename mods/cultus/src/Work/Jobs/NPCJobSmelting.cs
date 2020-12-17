@@ -16,41 +16,81 @@ using Vintagestory.ServerMods.NoObf;
 
 namespace cultus
 {
+    using static EnumFoundryState;
+
+    internal enum EnumFoundryState
+    {
+        PREPMOLDS,
+        FUEL,
+        METAL,
+        LIGHT,
+        WAIT,
+        POUR,
+        COLLECT
+    }
+
     internal class NPCJobSmelting : NPCJobArea
     {
-        private List<BatchSmelting> batches;
+        public EnumFoundryState State;
+
+        // Molds
+        private List<BlockPos> moldPos;
+
+        private List<IDuty> dutyQueue;
 
         public NPCJobSmelting(Cuboidi area, ICoreServerAPI api) : base(area, api)
         {
-            batches = new List<BatchSmelting>();
+            moldPos = new List<BlockPos>();
         }
 
-        public void FindSmeltingPoints()
+        public override void TryGetDuty(EntityDominionsNPC npc, ref IDuty activeDuty)
         {
-            string msg = "No firepit found";
-            int counter = 0;
+            if (dutyQueue.Count > 0)
+            {
+                activeDuty = dutyQueue.PopOne();
+            }
+            else
+            {
+                TryUpdateState();
+            }
+        }
 
-            api.World.BlockAccessor.SearchBlocks(area.Start.ToBlockPos(), area.End.ToBlockPos(),
-                (Block block, BlockPos blockPos) =>
-                {
-                    counter++;
+        private void TryUpdateState()
+        {
+            switch (State)
+            {
+                case PREPMOLDS:
+                    // get req molds
+                    // create mold-place task
+                    break;
 
-                    if (api.World.BlockAccessor.GetBlockEntity(blockPos) is BlockEntityFirepit firepit)
-                    {
-                        if (!firepit.inputSlot.Empty)
-                        {
-                            return true;
-                        }
+                case FUEL:
+                    // get req fuel from batch
+                    // fuel deposit
+                    //dutyQueue.Add(new ErrandPutItem(charcoalStack, ));
+                    break;
 
-                        msg = "Found firepit!";
+                case METAL:
+                    // get req molds
+                    // create mold-place task
+                    //dutyQueue.Add(new ErrandPutItem(metalStack, ));
+                    break;
 
-                        return false;
-                    }
+                case LIGHT:
+                    // get req molds
+                    // create mold-place task
+                    //dutyQueue.Add(new ErrandLight());
+                    break;
+            }
 
-                    return true;
-                });
+            dutyQueue = CreateDutyQueue();
+        }
 
-            api.BroadcastMessageToAllGroups($"Searched {counter} blocks\n" + msg, EnumChatType.Notification);
+        private List<IDuty> CreateDutyQueue()
+        {
+            List<IDuty> dutyQueue = new List<IDuty>();
+
+            return dutyQueue;
         }
     }
 }
