@@ -26,10 +26,10 @@ toward a shared direction and avoid conflicting paths.
 Inspiration is inevitable, and common naming for things, such as plants, animals and objects, is okay.
 
 ##### Stay with the times. 
-This is a low fantasy setting with ancient overtones. Huge differnces in technology from what exists in the world are discouraged.
+This is a low fantasy setting with eldritch overtones. Huge differences in technology from what exists in the world are discouraged.
 
 ##### Immersion and realism should strongly influence your choices.
-Magic and general obsurdism has a place in the setting. However, we ask to mindful when coming up with the aforementioned elements. 
+Magic and general absurdism has a place in the setting. However, we ask to be mindful when coming up with the aforementioned elements. 
 
 ##### Direct contradictions with the existing content should be avoided. 
-Some things will slip, moreso as the amount of content scales. Please try your best to research what already exists to find out if your idea directly contradicts someone else's.
+Some things will slip through, moreso as the amount of content increases. Please try your best to research what already exists to find out if your idea directly contradicts someone else's.
