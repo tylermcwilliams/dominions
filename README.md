@@ -5,7 +5,7 @@ Dominions is a Vintage Story server project aimed at providing a hub for collect
 ## The setting is the sum of the community's contributions.
 
 Leaving the setting open to the community allows for great diversity and completeness. People can contribute as much as they please; 
-this includes anything from simple interactions via your ingame character, to entire ecosystems and civilizations.
+this includes anything from simple interactions via their ingame character, to entire ecosystems and civilizations.
 The rules for contributing to the world of Dominions are there only to provide a center of gravity, and are meant to help
 keep the setting consistent. 
 
