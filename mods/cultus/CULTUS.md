@@ -16,7 +16,7 @@ The base Vintage Story library includes an [EntityBehavior](https://apidocs.vint
 ## Jobs, and Duties
 
 Labor routines are handled by an AiTask implementation named [AiTaskWork](https://github.com/tylermcwilliams/dominions/blob/master/mods/cultus/src/NPC/Tasks/AiTaskWork.cs).
-AiTaskWork takes care of leading the NPC to where it needs to be in order to perform a current work duty, as well as performing said duty once it's in range. 
+This takes care of leading the NPC to where it needs to be in order to perform an assigned work duty, as well as performing said duty once it's in range. 
 
 [Duties](https://github.com/tylermcwilliams/dominions/blob/master/mods/cultus/src/Work/Duties/IDuty.cs) are single-purpose errands. They often have other Duties nested within
 their implementation that act as prerequisites. For instance, A Duty to Till soil will have a nested Duty to find a Hoe; as long as the NPC lacks a hoe, running the Tilling Duty will actually run the Duty to find a Hoe. If the NPC loses the Hoe after having found it, the Duty to search for a Hoe will become active again.
