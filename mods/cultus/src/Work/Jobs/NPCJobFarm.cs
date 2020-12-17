@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using Vintagestory.API.Common;
@@ -52,7 +53,7 @@ namespace cultus
             this.growthTime = ripeCrop.CropProps.TotalGrowthDays + 1;
 
             State = EnumFarmState.TILLING;
-            dutyQueue = CreateDutyQueue();
+            CreateDutyQueue();
         }
 
         public override void TryGetDuty(EntityDominionsNPC npc, ref IDuty duty)
@@ -74,61 +75,35 @@ namespace cultus
                 return;
             }
 
-            switch (State)
+            if (State == EnumFarmState.HARVESTING)
             {
-                case EnumFarmState.TILLING:
-                    State = EnumFarmState.SOWING;
-                    break;
-
-                case EnumFarmState.SOWING:
-                    plantDate = api.World.Calendar.DayOfYear;
-                    State = EnumFarmState.GROWING;
-                    return;
-
-                case EnumFarmState.GROWING:
-                    State = EnumFarmState.HARVESTING;
-                    break;
-
-                case EnumFarmState.HARVESTING:
-                    State = EnumFarmState.SOWING;
-                    break;
+                State = EnumFarmState.SOWING;
+            }
+            else
+            {
+                if (State == EnumFarmState.SOWING) plantDate = api.World.Calendar.DayOfYear;
+                State++;
             }
 
-            dutyQueue = CreateDutyQueue();
+            CreateDutyQueue();
         }
 
-        private List<IDuty> CreateDutyQueue()
+        private void CreateDutyQueue()
         {
-            List<IDuty> dutyQueue = new List<IDuty>();
-
             BlockPos startPos = new BlockPos(area.MinX, area.MaxY, area.MinZ);
             BlockPos endPos = startPos.AddCopy(0, 0, area.SizeZ);
 
-            switch (State)
+            for (int i = 0; i <= area.SizeX; i++)
             {
-                case EnumFarmState.TILLING:
-                    for (int i = 0; i <= area.SizeX; i++)
-                    {
-                        dutyQueue.Add(new ErrandTillSoil(api, startPos.AddCopy(i, 0, 0), endPos.AddCopy(i, 0, 0), stockpile));
-                    }
-                    break;
+                if (State == EnumFarmState.TILLING)
+                    dutyQueue.Add(new ErrandTillSoil(api, startPos.AddCopy(i, 0, 0), endPos.AddCopy(i, 0, 0), stockpile));
 
-                case EnumFarmState.SOWING:
-                    for (int i = 0; i <= area.SizeX; i++)
-                    {
-                        dutyQueue.Add(new ErrandSowCrop(api, startPos.AddCopy(i, 0, 0), endPos.AddCopy(i, 0, 0), crop, stockpile));
-                    }
-                    break;
+                if (State == EnumFarmState.SOWING)
+                    dutyQueue.Add(new ErrandSowCrop(api, startPos.AddCopy(i, 0, 0), endPos.AddCopy(i, 0, 0), crop, stockpile));
 
-                case EnumFarmState.HARVESTING:
-                    for (int i = 0; i <= area.SizeX; i++)
-                    {
-                        dutyQueue.Add(new ErrandHarvestCrop(api, startPos.AddCopy(i, 0, 0), endPos.AddCopy(i, 0, 0), ripeCrop));
-                    }
-                    break;
+                if (State == EnumFarmState.HARVESTING)
+                    dutyQueue.Add(new ErrandHarvestCrop(api, startPos.AddCopy(i, 0, 0), endPos.AddCopy(i, 0, 0), ripeCrop));
             }
-
-            return dutyQueue;
         }
     }
 }
