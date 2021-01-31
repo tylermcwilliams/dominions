@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Vintagestory.API.Common;
 using Vintagestory.API.Common.Entities;
@@ -56,10 +57,18 @@ namespace cultus
                     msg = ViewInventory(player);
                     break;
 
+                case "quick":
+                    msg = "Assets \n";
+                    msg += $"{api.WorldManager.GetBlockId(new AssetLocation("game", "blocktypes/liquid/glacierice"))} \n";
+                    msg += $"{api.WorldManager.GetBlockId(new AssetLocation("game", "blocktypes/liquid/glacierice.json"))} \n";
+                    break;
+
                 default:
                     msg = "Error, Invalid args";
                     break;
             }
+
+            api.BroadcastMessageToAllGroups("", EnumChatType.Notification);
 
             player.SendMessage(groupId, msg, EnumChatType.CommandSuccess);
         }

@@ -47,5 +47,13 @@ namespace cultus
                 return itemstack == stack;
             };
         }
+
+        public static ActionBoolReturn<ItemStack> IsItemClass(Type itemclass)
+        {
+            return (ItemStack itemstack) =>
+            {
+                return itemstack.Item != null && itemstack.Item.Class == itemclass.Name;
+            };
+        }
     }
 }

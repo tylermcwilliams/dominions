@@ -57,6 +57,11 @@ namespace cultus
 
         private void TryUpdateState()
         {
+            CreateDutyQueue();
+        }
+
+        private void CreateDutyQueue()
+        {
             switch (State)
             {
                 case PREPMOLDS:
@@ -79,18 +84,17 @@ namespace cultus
                 case LIGHT:
                     // get req molds
                     // create mold-place task
-                    //dutyQueue.Add(new ErrandLight());
+                    //dutyQueue.Add(new ErrandLightFirepit());
+                    break;
+
+                case POUR:
+                    // pour crucible into molds
+                    break;
+
+                case COLLECT:
+                    // collect items from molds, deposit
                     break;
             }
-
-            dutyQueue = CreateDutyQueue();
-        }
-
-        private List<IDuty> CreateDutyQueue()
-        {
-            List<IDuty> dutyQueue = new List<IDuty>();
-
-            return dutyQueue;
         }
     }
 }
