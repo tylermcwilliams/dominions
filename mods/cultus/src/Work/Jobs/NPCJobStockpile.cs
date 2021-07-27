@@ -45,5 +45,10 @@ namespace cultus
 
             return containers;
         }
+
+        public override bool TryGetErrand(EntityDominionsNPC npc, ref IErrand errand)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

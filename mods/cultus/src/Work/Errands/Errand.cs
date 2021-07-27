@@ -8,12 +8,12 @@ using Action = Vintagestory.API.Common.Action;
 
 namespace cultus
 {
-    internal abstract class Errand : IDuty
+    internal abstract class Errand : IErrand
     {
         protected EntityDominionsNPC npc;
 
-        protected float cd = 3;
-        protected float elapsed;
+        protected float cooldown = 0.5f;
+        protected float timeElapsed;
 
         protected Errand(Vintagestory.API.Common.Action<bool> OnFinished = null)
         {
@@ -23,7 +23,7 @@ namespace cultus
         public virtual void Init(EntityDominionsNPC npc)
         {
             this.npc = npc;
-            this.elapsed = 0;
+            timeElapsed = 0;
         }
 
         public abstract bool ShouldRun();
@@ -34,9 +34,9 @@ namespace cultus
 
         protected bool ShouldWait(float dt)
         {
-            if ((elapsed += dt) >= cd)
+            if ((timeElapsed += dt) >= cooldown)
             {
-                elapsed = 0;
+                timeElapsed = 0;
                 return false;
             }
 

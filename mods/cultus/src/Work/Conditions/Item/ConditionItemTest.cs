@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Remoting.Proxies;
-using System.Text;
-using System.Threading.Tasks;
-using Vintagestory.API;
 using Vintagestory.API.Common;
+using Vintagestory.API.Datastructures;
 using Vintagestory.GameContent;
 
 namespace cultus
@@ -37,6 +32,22 @@ namespace cultus
             {
                 if (itemstack.Item == null || itemstack.Item.ItemClass.GetType() == typeof(ItemPlantableSeed)) return false;
                 return itemstack.Item.LastCodePart() == crop;
+            };
+        }
+
+        public static ActionBoolReturn<ItemStack> IsItemstack(ItemStack stack)
+        {
+            return (ItemStack itemstack) =>
+            {
+                return itemstack == stack;
+            };
+        }
+
+        public static ActionBoolReturn<ItemStack> IsItemClass(Type itemclass)
+        {
+            return (ItemStack itemstack) =>
+            {
+                return itemstack.Item != null && itemstack.Item.Class == itemclass.Name;
             };
         }
     }

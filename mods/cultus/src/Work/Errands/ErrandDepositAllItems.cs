@@ -12,13 +12,13 @@ using Vintagestory.GameContent;
 
 namespace cultus
 {
-    internal class ErrandDepositItems : Errand
+    internal class ErrandDepositAllItems : Errand
     {
         private List<BlockEntityContainer> containers;
 
         private NPCJobStockpile stockpile;
 
-        public ErrandDepositItems(NPCJobStockpile stockpile)
+        public ErrandDepositAllItems(NPCJobStockpile stockpile)
         {
             this.containers = stockpile.FindContainers();
 
@@ -47,12 +47,12 @@ namespace cultus
             if (containers.Count() == 0)
             {
                 containers = stockpile.FindContainers();
-                cd = 5;
+                cooldown = 5;
                 return;
             }
             else
             {
-                cd = 2;
+                cooldown = 2;
             }
 
             WeightedSlot bestSlot = containers.PopOne().Inventory.GetBestSuitedSlot(npc.RightHandItemSlot);

@@ -17,25 +17,26 @@ namespace cultus
 
     internal class ErrandTillSoil : Errand
     {
-        private IDuty SubErrand;
+        private IErrand subErrand;
 
-        private ICoreServerAPI api;
+        private ICoreServerAPI sapi;
         private BlockPos curPos;
         private BlockPos end;
+        private EntityDominionsNPC npc;
 
-        public ErrandTillSoil(ICoreServerAPI api, BlockPos start, BlockPos end, NPCJobStockpile stockpile)
+        public ErrandTillSoil(ICoreServerAPI sapi, BlockPos start, BlockPos end, NPCJobStockpile stockpile)
         {
-            SubErrand = new ErrandSearchForItem(IsTool(EnumTool.Hoe), stockpile);
-
-            this.api = api;
-            this.curPos = start;
+            subErrand = new ErrandSearchForItem(IsTool(EnumTool.Hoe), stockpile);
+            this.sapi = sapi;
+            curPos = start;
             this.end = end;
         }
 
         public override void Init(EntityDominionsNPC npc)
         {
             base.Init(npc);
-            SubErrand.Init(npc);
+            this.npc = npc;
+            subErrand.Init(npc);
         }
 
         public override bool ShouldRun()
@@ -45,37 +46,41 @@ namespace cultus
 
         public override BlockPos NextBlock()
         {
-            return SubErrand.ShouldRun() ? SubErrand.NextBlock() : curPos;
+            return subErrand.ShouldRun() ? subErrand.NextBlock() : curPos;
         }
 
         public override void Run(float dt)
         {
-            if (SubErrand.ShouldRun())
+            if (subErrand.ShouldRun())
             {
-                SubErrand.Run(dt);
+                subErrand.Run(dt);
                 return;
             }
 
             BlockPos groundPos = curPos.DownCopy(1);
-            Block block = api.World.BlockAccessor.GetBlock(groundPos);
-            Block farmland = api.World.GetBlock(new AssetLocation("farmland-dry-" + block.LastCodePart(1)));
+            Block block = sapi.World.BlockAccessor.GetBlock(groundPos);
+            Block farmland = sapi.World.GetBlock(new AssetLocation("farmland-dry-" + block.LastCodePart(1)));
 
             if (farmland != null && !block.Equals(farmland))
             {
                 if (ShouldWait(dt)) return;
 
-                api.World.BlockAccessor.SetBlock(farmland.BlockId, groundPos);
-                BlockEntity be = api.World.BlockAccessor.GetBlockEntity(groundPos);
-                if (be is BlockEntityFarmland)
+                sapi.World.BlockAccessor.SetBlock(farmland.BlockId, groundPos);
+                BlockEntity be = sapi.World.BlockAccessor.GetBlockEntity(groundPos);
+                if (be is BlockEntityFarmland beFarmland)
                 {
-                    ((BlockEntityFarmland)be).CreatedFromSoil(block);
+                    beFarmland.CreatedFromSoil(block);
                 }
                 else
                 {
                     return;
                 }
-                if (block.Sounds != null) api.World.PlaySoundAt(block.Sounds.Place, groundPos.X, groundPos.Y, groundPos.Z, null);
-                api.World.BlockAccessor.MarkBlockDirty(groundPos);
+
+                if (block.Sounds != null)
+                {
+                    sapi.World.PlaySoundAt(block.Sounds.Place, groundPos.X, groundPos.Y, groundPos.Z, null);
+                }
+                sapi.World.BlockAccessor.MarkBlockDirty(groundPos);
             }
 
             curPos.Add(0, 0, 1);

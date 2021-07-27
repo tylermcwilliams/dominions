@@ -12,7 +12,7 @@ namespace cultus
 {
     internal class ErrandSearchForItem : Errand
     {
-        private IDuty SubErrand;
+        private IErrand SubErrand;
 
         public int amount;
 
@@ -24,7 +24,8 @@ namespace cultus
 
         public ErrandSearchForItem(ActionBoolReturn<ItemStack> itemTest, NPCJobStockpile stockpile, int amount = 1)
         {
-            SubErrand = new ErrandDepositItems(stockpile);
+            // We clear the inventory
+            SubErrand = new ErrandDepositAllItems(stockpile);
 
             this.itemTest = itemTest;
             this.amount = amount;
@@ -39,7 +40,7 @@ namespace cultus
             base.Init(npc);
             SubErrand.Init(npc);
 
-            this.cd = 2;
+            this.cooldown = 2;
         }
 
         public override bool ShouldRun()
@@ -67,12 +68,12 @@ namespace cultus
             if (containers.Count() == 0)
             {
                 containers = stockpile.FindContainers();
-                cd = 5;
+                cooldown = 5;
                 return;
             }
             else
             {
-                cd = 2;
+                cooldown = 2;
             }
 
             BlockEntityContainer container = containers.PopOne();

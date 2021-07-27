@@ -16,7 +16,6 @@ namespace cultus
             BEAreaMarker marker = DebugManagerMarker.CreateJobMarker(player.CurrentBlockSelection.Position.UpCopy(), api, EnumMarkerJob.SMELTING);
 
             NPCJobSmelting job = (NPCJobSmelting)marker.job;
-            job.FindSmeltingPoints();
         }
     }
 }

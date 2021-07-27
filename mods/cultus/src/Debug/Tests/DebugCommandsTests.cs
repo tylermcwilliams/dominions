@@ -13,15 +13,15 @@ namespace cultus
 
     internal class DebugCommandsTests : ModSystem
     {
-        private ICoreServerAPI api;
-        private Dictionary<string, List<EntityDominionsNPC>> selections;
+        private ICoreServerAPI sapi;
+        private Dictionary<string, List<EntityDominionsNPC>> selectedNpcs;
 
         public override void StartServerSide(ICoreServerAPI api)
         {
-            this.api = api;
-            this.selections = new Dictionary<string, List<EntityDominionsNPC>>();
+            this.sapi = api;
+            this.selectedNpcs = new Dictionary<string, List<EntityDominionsNPC>>();
 
-            api.RegisterCommand("dtest", "", "[farm|smelt]", CommandHandler);
+            api.RegisterCommand("dtest", "", "[farm|smelt|farmstock]", CommandHandler);
         }
 
         private void CommandHandler(IServerPlayer player, int groupId, CmdArgs args)

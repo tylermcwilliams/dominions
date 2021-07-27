@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>cultus</RootNamespace>
     <AssemblyName>cultus</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -38,7 +39,7 @@
     <Reference Include="cairo-sharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
     <Reference Include="protobuf-net, Version=2.1.0.0, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Users\Tyler McWilliams\AppData\Roaming\Vintagestory\Lib\protobuf-net.dll</HintPath>
+      <HintPath>$(AppData)\Vintagestory\Lib\protobuf-net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -75,24 +76,35 @@
   <ItemGroup>
     <None Include="assets\game\blocktypes\areamarker.json" />
     <None Include="assets\game\entities\dominionsNPC.json" />
+    <None Include="docs\summary.md" />
     <None Include="docs\work routines.md" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
+    <Folder Include="src\Area\Areas\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="src\NPC\Utils\LocalTalk\TalkModePresets\TalkModeWhisper.cs" />
+    <Compile Include="src\NPC\Utils\LocalTalk\TalkModePresets\ILocalTalkMode.cs" />
+    <Compile Include="src\NPC\Utils\LocalTalk\TalkModePresets\TalkModeNormal.cs" />
+    <Compile Include="src\NPC\Utils\LocalTalk\TalkModePresets\TalkModeShout.cs" />
     <Compile Include="src\Work\Conditions\Entity\ConditionHasItem.cs" />
     <Compile Include="src\Work\Conditions\Entity\ConditionHasBlock.cs" />
-    <Compile Include="src\Work\Conditions\Entity\ConditionHasDuty.cs" />
+    <Compile Include="src\Work\Conditions\Entity\ConditionHasErrand.cs" />
     <Compile Include="src\Work\Conditions\Entity\ConditionHasItemEquipped.cs" />
     <Compile Include="src\Work\Conditions\Entity\ConditionHasTool.cs" />
     <Compile Include="src\Work\Conditions\Item\ConditionItemTest.cs" />
-    <Compile Include="src\Work\Duties\Errands\Errand.cs" />
-    <Compile Include="src\Work\Duties\Errands\ErrandDepositItems.cs" />
-    <Compile Include="src\Work\Duties\Errands\ErrandSearchForItem.cs" />
-    <Compile Include="src\Work\Duties\Errands\ErrandHarvestCrop.cs" />
-    <Compile Include="src\Work\Duties\Errands\ErrandSowCrop.cs" />
-    <Compile Include="src\Work\Duties\IDuty.cs" />
-    <Compile Include="src\Work\Duties\Errands\ErrandTillSoil.cs" />
+    <Compile Include="src\Work\Errands\Errand.cs" />
+    <Compile Include="src\Work\Errands\ErrandPutItem.cs" />
+    <Compile Include="src\Work\Errands\ErrandDepositAllItems.cs" />
+    <Compile Include="src\Work\Errands\ErrandSearchForItem.cs" />
+    <Compile Include="src\Work\Errands\ErrandHarvestCrop.cs" />
+    <Compile Include="src\Work\Errands\ErrandSowCrop.cs" />
+    <Compile Include="src\Work\Errands\ErrandLightFirepit.cs" />
+    <Compile Include="src\Work\Errands\IErrand.cs" />
+    <Compile Include="src\Work\Errands\ErrandTillSoil.cs" />
+    <Compile Include="src\NPC\Utils\LocalTalk\ILocalTalk.cs" />
     <Compile Include="src\Work\Jobs\INPCJob.cs" />
+    <Compile Include="src\NPC\Utils\LocalTalk\LocalTalk.cs" />
     <Compile Include="src\Work\Jobs\NPCJobArea.cs" />
     <Compile Include="src\Work\Jobs\NPCJobSmelting.cs" />
     <Compile Include="src\Work\Jobs\NPCJobStockpile.cs" />
@@ -116,7 +128,7 @@
   <PropertyGroup>
     <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
     <PostBuildEvent>
-		
+
 		"$(SolutionDir)python\modpacker.exe" $(AssemblyName) $(Configuration)
 </PostBuildEvent>
   </PropertyGroup>

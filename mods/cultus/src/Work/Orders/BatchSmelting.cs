@@ -5,36 +5,29 @@ using System.Text;
 using System.Threading.Tasks;
 using Vintagestory.API.Common;
 using Vintagestory.API.Server;
+using Vintagestory.GameContent;
 using Vintagestory.ServerMods.NoObf;
 
 namespace cultus
 {
     internal class BatchSmelting
     {
-        public string ore;
-        public int units;
+        public Item product;
+        public int qty;
 
-        private Dictionary<string, int> book;
+        public BlockToolMold mold;
 
-        public BatchSmelting()
+        public int units
         {
-            ore = "copper";
-            units = 0;
-            book = new Dictionary<string, int>();
+            get => qty;
         }
 
-        public void AddItems(string item, int amount)
+        public BatchSmelting(BlockToolMold mold, int qty = 1)
         {
-            if (book.ContainsKey(item))
-            {
-                book[item] += amount;
-            }
-            else
-            {
-                book.Add(item, amount);
-            }
+            this.product = product;
+            this.qty = qty;
 
-            units = amount * 100;
+            this.mold = mold;
         }
     }
 }
