@@ -81,6 +81,7 @@
     <Compile Include="mods\cultus\src\Area\Block\BlockAreaMarker.cs" />
     <Compile Include="mods\cultus\src\Cultus.cs" />
     <Compile Include="mods\cultus\src\Debug\DebugCommandsNPC.cs" />
+    <Compile Include="mods\cultus\src\Debug\Manager\NpcNameGenerator.cs" />
     <Compile Include="mods\cultus\src\Debug\Tests\DebugCommandsTests.cs" />
     <Compile Include="mods\cultus\src\Debug\Manager\DebugManagerMarker.cs" />
     <Compile Include="mods\cultus\src\Debug\Manager\DebugManagerNPC.cs" />

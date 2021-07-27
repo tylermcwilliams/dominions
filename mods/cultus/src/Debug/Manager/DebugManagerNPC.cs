@@ -23,7 +23,7 @@ namespace cultus
             MoveEntityToBlockPos(entity, pos, api);
 
             EntityBehaviorNameTag entName = entity.GetBehavior<EntityBehaviorNameTag>();
-            entName.SetName(GetRandomName());
+            entName.SetName(new NpcNameGenerator().GetRandomName());
 
             return (EntityDominionsNPC)entity;
         }
@@ -47,7 +47,6 @@ namespace cultus
 
             // FIND OUT WHY WE DO THIS
             entity.Pos.SetFrom(entity.ServerPos);
-            //
 
             entity.PositionBeforeFalling.Set(entity.ServerPos.X, entity.ServerPos.Y, entity.ServerPos.Z);
 
@@ -56,43 +55,5 @@ namespace cultus
             api.World.SpawnEntity(entity);
         }
 
-        private static string GetRandomName()
-        {
-            string[] randomNameParts = new string[] {
-                "Ar",
-                "Mok",
-                "Ul",
-                "Kar",
-                "Grok",
-                "Mor",
-                "Ala",
-                "Kon",
-                "Uro"
-            };
-
-            int RNPlength = randomNameParts.Length;
-            int randomNameLength = new Random().Next(1, 4);
-            Random randomNamePart = new Random();
-
-            string newName = "";
-
-            for (int x = 0; x <= randomNameLength; x++)
-            {
-                string nameSec = randomNameParts[randomNamePart.Next(1, RNPlength)];
-
-                if (x > 0 && x < 3)
-                {
-                    nameSec = nameSec.ToLower();
-                }
-                if (x == 3)
-                {
-                    nameSec = @"'" + nameSec;
-                }
-
-                newName += nameSec;
-            }
-
-            return newName;
-        }
     }
 }
