@@ -14,15 +14,15 @@ namespace cultus
 
     internal class DebugCommandsNPC : ModSystem
     {
-        private ICoreServerAPI api;
-        private Dictionary<string, List<EntityDominionsNPC>> selections;
+        private ICoreServerAPI sapi;
+        private Dictionary<string, List<EntityDominionsNPC>> playerSelectedNpcsPairs;
 
         public override void StartServerSide(ICoreServerAPI api)
         {
-            this.api = api;
-            this.selections = new Dictionary<string, List<EntityDominionsNPC>>();
+            sapi = api;
+            playerSelectedNpcsPairs = new Dictionary<string, List<EntityDominionsNPC>>();
 
-            api.RegisterCommand("dnpc", "", "[new|select|clear|job]", CommandHandler);
+            api.RegisterCommand("dnpc", "", "[new|select|clear|job|despawn|list|inv]", CommandHandler);
         }
 
         private void CommandHandler(IServerPlayer player, int groupId, CmdArgs args)
@@ -39,13 +39,16 @@ namespace cultus
                     break;
 
                 case "clear":
-                    int count = selections.ContainsKey(player.PlayerUID) ? selections[player.PlayerUID].Count : 0;
-                    selections.Remove(player.PlayerUID);
-                    msg = $"Cleared {count} NPCs from selection";
-                    break;
-
+                    {
+                        int selectedNpcCount = playerSelectedNpcsPairs.ContainsKey(player.PlayerUID)
+                            ? playerSelectedNpcsPairs[player.PlayerUID].Count
+                            : 0;
+                        playerSelectedNpcsPairs.Remove(player.PlayerUID);
+                        msg = $"Cleared {selectedNpcCount} NPCs from selection";
+                        break;
+                    }
                 case "job":
-                    AssignJobToNPC(player);
+                    AssignJobToSelectedNPC(player);
                     msg = "Assigned job";
                     break;
 
@@ -53,14 +56,28 @@ namespace cultus
                     msg = ClearAllNPCs();
                     break;
 
+                case "list": //List selected NPCs
+                    {
+                        if (!playerSelectedNpcsPairs.ContainsKey(player.PlayerUID))
+                        {
+                            msg = $"No NPCs Selected.";
+                            break;
+                        }
+
+                        var selectedNpcs = playerSelectedNpcsPairs[player.PlayerUID];
+                        if (selectedNpcs.Count == 0)
+                        {
+                            msg = $"No NPCs Selected.";
+                            break;
+                        }
+
+                        var selectedNpcNames = from npc in selectedNpcs select npc.GetName();
+                        var npcsNamesJoined = string.Join(", ", selectedNpcNames);
+                        msg = $"Selected NPCs: [{npcsNamesJoined}]";
+                    }
+                    break;
                 case "inv":
                     msg = ViewInventory(player);
-                    break;
-
-                case "quick":
-                    msg = "Assets \n";
-                    msg += $"{api.WorldManager.GetBlockId(new AssetLocation("game", "blocktypes/liquid/glacierice"))} \n";
-                    msg += $"{api.WorldManager.GetBlockId(new AssetLocation("game", "blocktypes/liquid/glacierice.json"))} \n";
                     break;
 
                 default:
@@ -68,24 +85,25 @@ namespace cultus
                     break;
             }
 
-            api.BroadcastMessageToAllGroups("", EnumChatType.Notification);
+            //_sapi.BroadcastMessageToAllGroups("", EnumChatType.Notification);
 
             player.SendMessage(groupId, msg, EnumChatType.CommandSuccess);
         }
 
         private string CreateNPC(IServerPlayer player)
         {
-            EntityDominionsNPC npc = DebugManagerNPC.SpawnNPC(player, api);
+            EntityDominionsNPC npc = DebugManagerNPC.SpawnNPC(player, sapi);
 
             if (npc == null)
             {
                 return "Failed to create NPC";
             }
 
-            if (!selections.ContainsKey(@player.PlayerUID)) selections.Add(@player.PlayerUID, new List<EntityDominionsNPC>());
-            selections[@player.PlayerUID].Add(npc);
+            if (!playerSelectedNpcsPairs.ContainsKey(@player.PlayerUID)) playerSelectedNpcsPairs.Add(@player.PlayerUID, new List<EntityDominionsNPC>());
+            playerSelectedNpcsPairs[@player.PlayerUID].Add(npc);
 
-            return "Created npc";
+            var npcName = npc.GetName();
+            return $"Created npc named '{npcName}'";
         }
 
         private string SelectNPC(IServerPlayer player)
@@ -94,19 +112,19 @@ namespace cultus
 
             if (curSel != null && curSel.Entity is EntityDominionsNPC npc)
             {
-                if (!selections.ContainsKey(@player.PlayerUID))
+                if (!playerSelectedNpcsPairs.ContainsKey(player.PlayerUID))
                 {
-                    selections.Add(@player.PlayerUID, new List<EntityDominionsNPC>());
+                    CreateNpcSelectionList(player);
                 }
 
-                if (selections[@player.PlayerUID].Contains(npc))
+                if (playerSelectedNpcsPairs[player.PlayerUID].Contains(npc))
                 {
-                    selections[@player.PlayerUID].Remove(npc);
+                    playerSelectedNpcsPairs[player.PlayerUID].Remove(npc);
                     return "Unselected " + npc.GetName();
                 }
                 else
                 {
-                    selections[@player.PlayerUID].Add(npc);
+                    playerSelectedNpcsPairs[player.PlayerUID].Add(npc);
                     return "Selected " + npc.GetName();
                 }
             }
@@ -115,18 +133,23 @@ namespace cultus
                 return "Not looking at an NPC";
             }
         }
-
-        private string AssignJobToNPC(IServerPlayer player)
+        private void CreateNpcSelectionList(IServerPlayer player)
         {
-            if (!selections.ContainsKey(player.PlayerUID)) return "No NPCs are selected";
+            playerSelectedNpcsPairs.Add(player.PlayerUID, new List<EntityDominionsNPC>());
+        }
+
+        private string AssignJobToSelectedNPC(IServerPlayer player)
+        {
+            if (!playerSelectedNpcsPairs.ContainsKey(player.PlayerUID)) return "No NPCs are selected";
 
             BlockSelection curSel = player.CurrentBlockSelection;
 
-            if (curSel != null && api.World.BlockAccessor.GetBlockEntity(curSel.Position) is BEAreaMarker marker)
+            if (curSel != null
+                && sapi.World.BlockAccessor.GetBlockEntity(curSel.Position) is BEAreaMarker marker)
             {
                 int count = 0;
 
-                foreach (EntityDominionsNPC npc in selections[player.PlayerUID])
+                foreach (EntityDominionsNPC npc in playerSelectedNpcsPairs[player.PlayerUID])
                 {
                     npc.Job = marker.job;
                     count++;
@@ -142,17 +165,17 @@ namespace cultus
 
         private string ClearAllNPCs()
         {
-            int counter = 0;
-            foreach (Entity ent in api.World.LoadedEntities.Values)
+            int clearedNpcCount = 0;
+            foreach (Entity ent in sapi.World.LoadedEntities.Values)
             {
                 if (ent is EntityDominionsNPC npc)
                 {
                     npc.Die();
-                    counter++;
+                    clearedNpcCount++;
                 }
             }
 
-            return $"Despawned {counter} NPCs";
+            return $"Despawned {clearedNpcCount} NPCs";
         }
 
         private string ViewInventory(IServerPlayer player)
