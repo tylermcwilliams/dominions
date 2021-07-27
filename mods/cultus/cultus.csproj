@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>cultus</RootNamespace>
     <AssemblyName>cultus</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -92,15 +93,15 @@
     <Compile Include="src\Work\Conditions\Entity\ConditionHasItemEquipped.cs" />
     <Compile Include="src\Work\Conditions\Entity\ConditionHasTool.cs" />
     <Compile Include="src\Work\Conditions\Item\ConditionItemTest.cs" />
-    <Compile Include="src\Work\Conditions\Errands\Errand.cs" />
-    <Compile Include="src\Work\Conditions\Errands\ErrandPutItem.cs" />
-    <Compile Include="src\Work\Conditions\Errands\ErrandDepositAllItems.cs" />
-    <Compile Include="src\Work\Conditions\Errands\ErrandSearchForItem.cs" />
-    <Compile Include="src\Work\Conditions\Errands\ErrandHarvestCrop.cs" />
-    <Compile Include="src\Work\Conditions\Errands\ErrandSowCrop.cs" />
-    <Compile Include="src\Work\Conditions\Errands\ErrandLightFirepit.cs" />
-    <Compile Include="src\Work\Conditions\Errands\IErrand.cs" />
-    <Compile Include="src\Work\Conditions\Errands\ErrandTillSoil.cs" />
+    <Compile Include="src\Work\Errands\Errand.cs" />
+    <Compile Include="src\Work\Errands\ErrandPutItem.cs" />
+    <Compile Include="src\Work\Errands\ErrandDepositAllItems.cs" />
+    <Compile Include="src\Work\Errands\ErrandSearchForItem.cs" />
+    <Compile Include="src\Work\Errands\ErrandHarvestCrop.cs" />
+    <Compile Include="src\Work\Errands\ErrandSowCrop.cs" />
+    <Compile Include="src\Work\Errands\ErrandLightFirepit.cs" />
+    <Compile Include="src\Work\Errands\IErrand.cs" />
+    <Compile Include="src\Work\Errands\ErrandTillSoil.cs" />
     <Compile Include="src\NPC\Utils\LocalTalk\ILocalTalk.cs" />
     <Compile Include="src\Work\Jobs\INPCJob.cs" />
     <Compile Include="src\NPC\Utils\LocalTalk\LocalTalk.cs" />

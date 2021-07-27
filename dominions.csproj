@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>dominions</RootNamespace>
     <AssemblyName>dominions</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -92,16 +92,19 @@
     <Compile Include="mods\cultus\src\NPC\Tasks\AiTaskWork.cs" />
     <Compile Include="mods\cultus\src\Work\Conditions\Item\ConditionItemTest.cs" />
     <Compile Include="mods\cultus\src\Work\Conditions\Entity\ConditionHasBlock.cs" />
-    <Compile Include="mods\cultus\src\Work\Conditions\Entity\ConditionHasDuty.cs" />
+    <Compile Include="mods\cultus\src\Work\Conditions\Entity\ConditionHasErrand.cs" />
     <Compile Include="mods\cultus\src\Work\Conditions\Entity\ConditionHasItem.cs" />
     <Compile Include="mods\cultus\src\Work\Conditions\Entity\ConditionHasItemEquipped.cs" />
     <Compile Include="mods\cultus\src\Work\Conditions\Entity\ConditionHasTool.cs" />
-    <Compile Include="mods\cultus\src\Work\Duties\Errands\Errand.cs" />
-    <Compile Include="mods\cultus\src\Work\Duties\Errands\ErrandDepositAllItems.cs" />
-    <Compile Include="mods\cultus\src\Work\Duties\Errands\ErrandHarvestCrop.cs" />
-    <Compile Include="mods\cultus\src\Work\Duties\Errands\ErrandSearchForItem.cs" />
-    <Compile Include="mods\cultus\src\Work\Duties\Errands\ErrandSowCrop.cs" />
-    <Compile Include="mods\cultus\src\Work\Duties\Errands\ErrandTillSoil.cs" />
+    <Compile Include="mods\cultus\src\Work\Errands\Errand.cs" />
+    <Compile Include="mods\cultus\src\Work\Errands\ErrandPutItem.cs" />
+    <Compile Include="mods\cultus\src\Work\Errands\ErrandDepositAllItems.cs" />
+    <Compile Include="mods\cultus\src\Work\Errands\ErrandSearchForItem.cs" />
+    <Compile Include="mods\cultus\src\Work\Errands\ErrandHarvestCrop.cs" />
+    <Compile Include="mods\cultus\src\Work\Errands\ErrandSowCrop.cs" />
+    <Compile Include="mods\cultus\src\Work\Errands\ErrandLightFirepit.cs" />
+    <Compile Include="mods\cultus\src\Work\Errands\IErrand.cs" />
+    <Compile Include="mods\cultus\src\Work\Errands\ErrandTillSoil.cs" />
     <Compile Include="mods\cultus\src\Work\Jobs\INPCJob.cs" />
     <Compile Include="mods\cultus\src\Work\Jobs\NPCJobArea.cs" />
     <Compile Include="mods\cultus\src\Work\Jobs\NPCJobFarm.cs" />
