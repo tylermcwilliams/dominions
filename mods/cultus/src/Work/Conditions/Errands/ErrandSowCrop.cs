@@ -18,7 +18,7 @@ namespace cultus
 
     internal class ErrandSowCrop : Errand
     {
-        private IDuty SubErrand;
+        private IErrand SubErrand;
 
         private ICoreServerAPI api;
         private BlockPos curPos;
@@ -42,7 +42,7 @@ namespace cultus
             base.Init(npc);
             SubErrand.Init(npc);
 
-            this.elapsed = cd;
+            this.timeElapsed = cooldown;
 
             this.npc = npc;
         }

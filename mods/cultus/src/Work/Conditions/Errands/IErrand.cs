@@ -8,7 +8,7 @@ using Vintagestory.API.MathTools;
 
 namespace cultus
 {
-    public interface IDuty
+    public interface IErrand
     {
         void Init(EntityDominionsNPC npc);
 

@@ -19,7 +19,7 @@ namespace cultus
     {
         private readonly EntityDominionsNPC npc;
 
-        private IDuty duty;
+        private IErrand errand;
 
         public AiTaskWork(EntityAgent entity) : base(entity)
         {
@@ -45,11 +45,11 @@ namespace cultus
 
             if (pathTraverser.Active) return true;
 
-            BlockPos destination = duty.NextBlock();
+            BlockPos destination = errand.NextBlock();
 
             if (entity.ServerPos.DistanceTo(destination.ToVec3d()) < 3)
             {
-                duty.Run(dt);
+                errand.Run(dt);
             }
             else
             {
@@ -68,24 +68,24 @@ namespace cultus
         {
             if (npc.Job == null)
             {
-                duty = null;
+                errand = null;
                 return false;
             }
 
-            if (duty == null)
+            if (errand == null)
             {
-                npc.Job.TryGetDuty(npc, ref duty);
-                if (duty != null)
+                npc.Job.TryGetErrand(npc, ref errand);
+                if (errand != null)
                 {
-                    duty.Init(npc);
+                    errand.Init(npc);
                 }
                 return false;
             }
             else
             {
-                if (duty.ShouldRun()) return true;
+                if (errand.ShouldRun()) return true;
 
-                duty = null;
+                errand = null;
                 return false;
             }
         }
@@ -95,11 +95,6 @@ namespace cultus
             base.StartExecute();
         }
 
-        public override string ToString()
-        {
-            return base.ToString();
-        }
-
         private void OnGoalReached()
         {
             pathTraverser.Stop();
@@ -107,11 +102,17 @@ namespace cultus
 
         private void OnStuck()
         {
+            if (world.Api is ICoreServerAPI sapi)
+            {
+                sapi.BroadcastMessageToAllGroups(
+                    message: $"{npc.GetName()}: I'm stuck..",
+                    chatType: EnumChatType.AllGroups);
+            }
         }
 
         public override void OnEntityDespawn(EntityDespawnReason reason)
         {
-            // return duty
+            // return errand.
 
             base.OnEntityDespawn(reason);
         }

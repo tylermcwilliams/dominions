@@ -16,6 +16,7 @@ using static cultus.Conditions;
 
 namespace cultus
 {
+
     internal enum EnumFarmState
     {
         TILLING,
@@ -26,20 +27,21 @@ namespace cultus
 
     internal class NPCJobFarm : NPCJobArea
     {
-        public string crop;
-        public EnumFarmState State;
 
-        private List<IDuty> dutyQueue;
+        private List<IErrand> errandQueue;
 
         private int plantDate;
         private float growthTime;
 
-        public Item seed;
-        public Block ripeCrop;
+        private Item seed;
+        private Block ripeCrop;
+
+        public string crop;
+        public EnumFarmState State;
 
         public NPCJobFarm(Cuboidi area, string crop, ICoreServerAPI api, NPCJobStockpile stockpile) : base(area, api)
         {
-            this.dutyQueue = new List<IDuty>();
+            this.errandQueue = new List<IErrand>();
 
             this.stockpile = stockpile;
 
@@ -53,22 +55,24 @@ namespace cultus
             this.growthTime = ripeCrop.CropProps.TotalGrowthDays + 1;
 
             State = EnumFarmState.TILLING;
-            CreateDutyQueue();
+            CreateErrandQueue();
         }
 
-        public override void TryGetDuty(EntityDominionsNPC npc, ref IDuty duty)
+        public override bool TryGetErrand(EntityDominionsNPC npc, ref IErrand errand)
         {
-            if (dutyQueue.Count > 0)
+            if (errandQueue.Count > 0)
             {
-                duty = dutyQueue.PopOne();
+                errand = errandQueue.PopOne();
+                return true;
             }
             else
             {
-                TryUpdateFarmState();
+                UpdateJobState();
+                return false;
             }
         }
 
-        private void TryUpdateFarmState()
+        private void UpdateJobState()
         {
             if (State == EnumFarmState.GROWING && api.World.Calendar.DayOfYear < (plantDate + growthTime))
             {
@@ -85,10 +89,10 @@ namespace cultus
                 State++;
             }
 
-            CreateDutyQueue();
+            CreateErrandQueue();
         }
 
-        private void CreateDutyQueue()
+        private void CreateErrandQueue()
         {
             BlockPos startPos = new BlockPos(area.MinX, area.MaxY, area.MinZ);
             BlockPos endPos = startPos.AddCopy(0, 0, area.SizeZ);
@@ -96,13 +100,13 @@ namespace cultus
             for (int i = 0; i <= area.SizeX; i++)
             {
                 if (State == EnumFarmState.TILLING)
-                    dutyQueue.Add(new ErrandTillSoil(api, startPos.AddCopy(i, 0, 0), endPos.AddCopy(i, 0, 0), stockpile));
+                    errandQueue.Add(new ErrandTillSoil(api, startPos.AddCopy(i, 0, 0), endPos.AddCopy(i, 0, 0), stockpile));
 
                 if (State == EnumFarmState.SOWING)
-                    dutyQueue.Add(new ErrandSowCrop(api, startPos.AddCopy(i, 0, 0), endPos.AddCopy(i, 0, 0), crop, stockpile));
+                    errandQueue.Add(new ErrandSowCrop(api, startPos.AddCopy(i, 0, 0), endPos.AddCopy(i, 0, 0), crop, stockpile));
 
                 if (State == EnumFarmState.HARVESTING)
-                    dutyQueue.Add(new ErrandHarvestCrop(api, startPos.AddCopy(i, 0, 0), endPos.AddCopy(i, 0, 0), ripeCrop));
+                    errandQueue.Add(new ErrandHarvestCrop(api, startPos.AddCopy(i, 0, 0), endPos.AddCopy(i, 0, 0), ripeCrop));
             }
         }
     }

@@ -36,31 +36,33 @@ namespace cultus
         // Molds
         private List<BlockPos> moldPos;
 
-        private List<IDuty> dutyQueue;
+        private List<IErrand> errandQueue;
 
         public NPCJobSmelting(Cuboidi area, ICoreServerAPI api) : base(area, api)
         {
             moldPos = new List<BlockPos>();
         }
 
-        public override void TryGetDuty(EntityDominionsNPC npc, ref IDuty activeDuty)
+        public override bool TryGetErrand(EntityDominionsNPC npc, ref IErrand activeErrand)
         {
-            if (dutyQueue.Count > 0)
+            if (errandQueue.Count > 0)
             {
-                activeDuty = dutyQueue.PopOne();
+                activeErrand = errandQueue.PopOne();
+                return true;
             }
             else
             {
                 TryUpdateState();
+                return false;
             }
         }
 
         private void TryUpdateState()
         {
-            CreateDutyQueue();
+            CreateErrandQueue();
         }
 
-        private void CreateDutyQueue()
+        private void CreateErrandQueue()
         {
             switch (State)
             {

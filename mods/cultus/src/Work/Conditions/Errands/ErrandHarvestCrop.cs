@@ -36,7 +36,7 @@ namespace cultus
         {
             base.Init(npc);
 
-            this.elapsed = 0;
+            this.timeElapsed = 0;
 
             this.npc = npc;
         }

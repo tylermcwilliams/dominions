@@ -9,9 +9,9 @@ namespace cultus
 {
     static partial class Conditions
     {
-        public static bool HasDuty(IDuty duty, Type T)
+        public static bool HasErrand(IErrand errand, Type T)
         {
-            return (duty != null && duty.GetType() == T);
+            return (errand != null && errand.GetType() == T);
         }
     }
 }

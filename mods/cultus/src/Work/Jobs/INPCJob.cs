@@ -2,6 +2,6 @@
 {
     public interface INPCJob
     {
-        void TryGetDuty(EntityDominionsNPC npc, ref IDuty TryGetDuty);
+        bool TryGetErrand(EntityDominionsNPC npc, ref IErrand TryGetErrand);
     }
 }

@@ -46,7 +46,7 @@ namespace cultus
             return containers;
         }
 
-        public override void TryGetDuty(EntityDominionsNPC npc, ref IDuty duty)
+        public override void TryGetErrand(EntityDominionsNPC npc, ref IErrand errand)
         {
             throw new NotImplementedException();
         }

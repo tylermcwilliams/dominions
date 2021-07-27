@@ -15,7 +15,7 @@ namespace cultus
     {
         private BlockEntityFirepit firepit;
 
-        private IDuty SubErrand;
+        private IErrand SubErrand;
 
         public ErrandLightFirepit(BlockEntityFirepit firepit, NPCJobStockpile stockpile)
         {

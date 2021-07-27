@@ -12,7 +12,7 @@ namespace cultus
 {
     internal class ErrandSearchForItem : Errand
     {
-        private IDuty SubErrand;
+        private IErrand SubErrand;
 
         public int amount;
 
@@ -40,7 +40,7 @@ namespace cultus
             base.Init(npc);
             SubErrand.Init(npc);
 
-            this.cd = 2;
+            this.cooldown = 2;
         }
 
         public override bool ShouldRun()
@@ -68,12 +68,12 @@ namespace cultus
             if (containers.Count() == 0)
             {
                 containers = stockpile.FindContainers();
-                cd = 5;
+                cooldown = 5;
                 return;
             }
             else
             {
-                cd = 2;
+                cooldown = 2;
             }
 
             BlockEntityContainer container = containers.PopOne();

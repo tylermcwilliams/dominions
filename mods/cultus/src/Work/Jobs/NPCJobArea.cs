@@ -22,6 +22,6 @@ namespace cultus
             this.workers = new List<EntityDominionsNPC>();
         }
 
-        public abstract void TryGetDuty(EntityDominionsNPC npc, ref IDuty duty);
+        public abstract bool TryGetErrand(EntityDominionsNPC npc, ref IErrand errand);
     }
 }
