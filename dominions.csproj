@@ -93,10 +93,10 @@
     <Compile Include="mods\cultus\src\NPC\Tasks\AiTaskWork.cs" />
     <Compile Include="mods\cultus\src\LocalTalk\ILocalTalk.cs" />
     <Compile Include="mods\cultus\src\LocalTalk\LocalTalk.cs" />
-    <Compile Include="mods\cultus\src\LocalTalk\TalkModePresets\ILocalTalkMode.cs" />
-    <Compile Include="mods\cultus\src\LocalTalk\TalkModePresets\TalkModeNormal.cs" />
-    <Compile Include="mods\cultus\src\LocalTalk\TalkModePresets\TalkModeShout.cs" />
-    <Compile Include="mods\cultus\src\LocalTalk\TalkModePresets\TalkModeWhisper.cs" />
+    <Compile Include="mods\cultus\src\LocalTalk\TalkModes\ILocalTalkMode.cs" />
+    <Compile Include="mods\cultus\src\LocalTalk\TalkModes\TalkModeNormal.cs" />
+    <Compile Include="mods\cultus\src\LocalTalk\TalkModes\TalkModeShout.cs" />
+    <Compile Include="mods\cultus\src\LocalTalk\TalkModes\TalkModeWhisper.cs" />
     <Compile Include="mods\cultus\src\Work\Conditions\Item\ConditionItemTest.cs" />
     <Compile Include="mods\cultus\src\Work\Conditions\Entity\ConditionHasBlock.cs" />
     <Compile Include="mods\cultus\src\Work\Conditions\Entity\ConditionHasErrand.cs" />
