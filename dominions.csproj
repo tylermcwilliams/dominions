@@ -77,13 +77,62 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="mods\cultus\src\Area\BEAreaMarker.cs" />
+    <Compile Include="mods\cultus\src\Area\Block\BlockAreaMarker.cs" />
+    <Compile Include="mods\cultus\src\Cultus.cs" />
+    <Compile Include="mods\cultus\src\Debug\DebugCommandsNPC.cs" />
+    <Compile Include="mods\cultus\src\Debug\Manager\NpcNameGenerator.cs" />
+    <Compile Include="mods\cultus\src\Debug\Tests\DebugCommandsTests.cs" />
+    <Compile Include="mods\cultus\src\Debug\Manager\DebugManagerMarker.cs" />
+    <Compile Include="mods\cultus\src\Debug\Manager\DebugManagerNPC.cs" />
+    <Compile Include="mods\cultus\src\Debug\Tests\TestFarming.cs" />
+    <Compile Include="mods\cultus\src\Debug\Tests\TestSmelting.cs" />
+    <Compile Include="mods\cultus\src\Debug\Tests\TestStockpile.cs" />
+    <Compile Include="mods\cultus\src\NPC\EntityDominionsNPC.cs" />
+    <Compile Include="mods\cultus\src\NPC\Inventory\InventoryNPC.cs" />
+    <Compile Include="mods\cultus\src\NPC\Tasks\AiTaskWork.cs" />
+    <Compile Include="mods\cultus\src\LocalTalk\ILocalTalk.cs" />
+    <Compile Include="mods\cultus\src\LocalTalk\LocalTalk.cs" />
+    <Compile Include="mods\cultus\src\LocalTalk\TalkModes\ILocalTalkMode.cs" />
+    <Compile Include="mods\cultus\src\LocalTalk\TalkModes\TalkModeNormal.cs" />
+    <Compile Include="mods\cultus\src\LocalTalk\TalkModes\TalkModeShout.cs" />
+    <Compile Include="mods\cultus\src\LocalTalk\TalkModes\TalkModeWhisper.cs" />
+    <Compile Include="mods\cultus\src\Work\Conditions\Item\ConditionItemTest.cs" />
+    <Compile Include="mods\cultus\src\Work\Conditions\Entity\ConditionHasBlock.cs" />
+    <Compile Include="mods\cultus\src\Work\Conditions\Entity\ConditionHasErrand.cs" />
+    <Compile Include="mods\cultus\src\Work\Conditions\Entity\ConditionHasItem.cs" />
+    <Compile Include="mods\cultus\src\Work\Conditions\Entity\ConditionHasItemEquipped.cs" />
+    <Compile Include="mods\cultus\src\Work\Conditions\Entity\ConditionHasTool.cs" />
+    <Compile Include="mods\cultus\src\Work\Errands\Errand.cs" />
+    <Compile Include="mods\cultus\src\Work\Errands\ErrandPutItem.cs" />
+    <Compile Include="mods\cultus\src\Work\Errands\ErrandDepositAllItems.cs" />
+    <Compile Include="mods\cultus\src\Work\Errands\ErrandSearchForItem.cs" />
+    <Compile Include="mods\cultus\src\Work\Errands\ErrandHarvestCrop.cs" />
+    <Compile Include="mods\cultus\src\Work\Errands\ErrandSowCrop.cs" />
+    <Compile Include="mods\cultus\src\Work\Errands\ErrandLightFirepit.cs" />
+    <Compile Include="mods\cultus\src\Work\Errands\IErrand.cs" />
+    <Compile Include="mods\cultus\src\Work\Errands\ErrandTillSoil.cs" />
+    <Compile Include="mods\cultus\src\Work\Jobs\INPCJob.cs" />
+    <Compile Include="mods\cultus\src\Work\Jobs\NPCJobArea.cs" />
+    <Compile Include="mods\cultus\src\Work\Jobs\NPCJobFarm.cs" />
+    <Compile Include="mods\cultus\src\Work\Jobs\NPCJobSmelting.cs" />
+    <Compile Include="mods\cultus\src\Work\Jobs\NPCJobStockpile.cs" />
+    <Compile Include="mods\cultus\src\Work\Orders\BatchSmelting.cs" />
     <Compile Include="RedirectLogs.cs" />
     <Content Include="modinfo.json" />
+    <Content Include="mods\cultus\cultus.csproj.user" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="mods\cultus\assets\game\blocktypes\areamarker.json" />
+    <None Include="mods\cultus\assets\game\entities\dominionsNPC.json" />
+    <None Include="mods\cultus\cultus.csproj" />
+    <None Include="mods\cultus\docs\work routines.md" />
+    <None Include="mods\cultus\modinfo.json" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="mods\cultus\src\Extensions\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
