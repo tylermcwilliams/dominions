@@ -83,10 +83,13 @@
     <Folder Include="src\Area\Areas\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="src\NPC\Utils\LocalTalk\TalkModePresets\TalkModeWhisper.cs" />
-    <Compile Include="src\NPC\Utils\LocalTalk\TalkModePresets\ILocalTalkMode.cs" />
-    <Compile Include="src\NPC\Utils\LocalTalk\TalkModePresets\TalkModeNormal.cs" />
-    <Compile Include="src\NPC\Utils\LocalTalk\TalkModePresets\TalkModeShout.cs" />
+    <Compile Include="src\LocalTalk\ILocalTalk.cs" />
+    <Compile Include="src\LocalTalk\LocalTalk.cs" />
+    <Compile Include="src\LocalTalk\TalkModes\ILocalTalkMode.cs" />
+    <Compile Include="src\LocalTalk\TalkModes\TalkModeNormal.cs" />
+    <Compile Include="src\LocalTalk\TalkModes\TalkModeShout.cs" />
+    <Compile Include="src\LocalTalk\TalkModes\TalkModeWhisper.cs" />
+    <Compile Include="src\NPC\NpcNameGenerator.cs" />
     <Compile Include="src\Work\Conditions\Entity\ConditionHasItem.cs" />
     <Compile Include="src\Work\Conditions\Entity\ConditionHasBlock.cs" />
     <Compile Include="src\Work\Conditions\Entity\ConditionHasErrand.cs" />
@@ -102,9 +105,7 @@
     <Compile Include="src\Work\Errands\ErrandLightFirepit.cs" />
     <Compile Include="src\Work\Errands\IErrand.cs" />
     <Compile Include="src\Work\Errands\ErrandTillSoil.cs" />
-    <Compile Include="src\NPC\Utils\LocalTalk\ILocalTalk.cs" />
     <Compile Include="src\Work\Jobs\INPCJob.cs" />
-    <Compile Include="src\NPC\Utils\LocalTalk\LocalTalk.cs" />
     <Compile Include="src\Work\Jobs\NPCJobArea.cs" />
     <Compile Include="src\Work\Jobs\NPCJobSmelting.cs" />
     <Compile Include="src\Work\Jobs\NPCJobStockpile.cs" />
