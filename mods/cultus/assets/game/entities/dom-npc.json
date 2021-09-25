@@ -1,5 +1,5 @@
 {
-  "code": "dominionsNPC",
+  "code": "dom-npc",
   "class": "EntityDominionsNPC",
   "canClimb": true,
   "climbTouchDistance": 0.5,

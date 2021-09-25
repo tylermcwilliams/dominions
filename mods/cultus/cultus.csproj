@@ -75,7 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\game\blocktypes\areamarker.json" />
-    <None Include="assets\game\entities\dominionsNPC.json" />
+    <None Include="assets\game\entities\dom-npc.json" />
     <None Include="docs\summary.md" />
     <None Include="docs\work routines.md" />
   </ItemGroup>

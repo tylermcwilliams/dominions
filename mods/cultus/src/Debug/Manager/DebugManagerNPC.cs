@@ -17,7 +17,7 @@ namespace cultus
         {
             BlockPos pos = player.Entity.ServerPos.HorizontalAheadCopy(3).AsBlockPos;
 
-            AssetLocation location = new AssetLocation("game", "dominionsNPC");
+            AssetLocation location = new AssetLocation("game", "dom-npc");
             Entity entity = CreateEntityInstance(location, api);
 
             MoveEntityToBlockPos(entity, pos, api);
