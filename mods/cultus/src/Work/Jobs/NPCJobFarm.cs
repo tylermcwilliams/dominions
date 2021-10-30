@@ -73,26 +73,31 @@ namespace cultus
         }
 
         private void UpdateJobState()
-        {
-            if (State == EnumFarmState.GROWING && api.World.Calendar.DayOfYear < (plantDate + growthTime))
-            {
-                return;
-            }
+    {
+      if (State == EnumFarmState.GROWING && IsHarvestSeason())
+      {
+        return;
+      }
 
-            if (State == EnumFarmState.HARVESTING)
-            {
-                State = EnumFarmState.SOWING;
-            }
-            else
-            {
-                if (State == EnumFarmState.SOWING) plantDate = api.World.Calendar.DayOfYear;
-                State++;
-            }
+      if (State == EnumFarmState.HARVESTING)
+      {
+        State = EnumFarmState.SOWING;
+      }
+      else
+      {
+        if (State == EnumFarmState.SOWING) plantDate = api.World.Calendar.DayOfYear;
+        State++;
+      }
 
-            CreateErrandQueue();
-        }
+      CreateErrandQueue();
+    }
 
-        private void CreateErrandQueue()
+    private bool IsHarvestSeason()
+    {
+      return api.World.Calendar.DayOfYear < (plantDate + growthTime);
+    }
+
+    private void CreateErrandQueue()
         {
             BlockPos startPos = new BlockPos(area.MinX, area.MaxY, area.MinZ);
             BlockPos endPos = startPos.AddCopy(0, 0, area.SizeZ);
